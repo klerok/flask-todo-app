@@ -3,7 +3,7 @@ name: CI Native
 on:
   push:
     branches: [master]
-  pull_request: 
+  pull_request:
     branches: [master]
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
 
     env:
       PYTHONPATH: ${{ github.workspace }}/application
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,5 +32,5 @@ jobs:
         run: |
           python manage.py runserver &
           sleep 5
-          curl -v -f http://127.0.0.1:7345/
+          python -c "import urllib2; r = urllib2.urlopen('http://127.0.0.1:7345/'); assert r.getcode() == 200; print r.read()[:200]"
           kill %1 || true
