@@ -9,15 +9,20 @@ on:
 jobs:
   build-and-smoke:
     runs-on: ubuntu-24.04
+    container:
+      image: python:2.7.18-slim
+
+    env:
+      PYTHONPATH: ${{ github.workspace }}/application
   
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
+      - name: Install curl
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends curl
 
       - name: Install dependencies
         run: |
